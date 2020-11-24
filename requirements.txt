@@ -1,0 +1,8 @@
+py-spy==0.3.3
+dbutils==2.0
+peewee==3.9.3
+pymysql==0.9.2
+pympler==0.9
+redis==3.2.1
+flask==1.0.2
+jaeger-client==4.3.0
