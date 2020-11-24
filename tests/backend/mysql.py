@@ -43,7 +43,7 @@ config_4 = dict(
 )
 
 
-class TestTencentDB(unittest.TestCase):
+class TestTenantDB(unittest.TestCase):
 
     def test_single(self):
         request()
@@ -76,7 +76,7 @@ def increase():
 def request():
     db_config = random.choice([config_1, config_2])
     cache_config = random.choice([config_3, config_4])
-    token = context.TencentToken()
+    token = context.TenantToken()
     token.organize(mysql.DataBaseMetaDataBuilder(**db_config))
     token.organize(cache.CacheMetaDataBuilder(**cache_config))
     with flask.build_context(token):

@@ -32,7 +32,7 @@ class MetaDataBuilder(abc.ABC, Generic[metadata]):
         raise NotImplementedError
 
 
-class TencentContext(lru.Element):
+class TenantContext(lru.Element):
 
     __slots__ = ("__meta_map",)
 
@@ -52,7 +52,7 @@ class TencentContext(lru.Element):
             meta_data.discard()
 
 
-class TencentToken(lru.Token):
+class TenantToken(lru.Token):
 
     __slots__ = ("__builders",)
 
@@ -67,14 +67,14 @@ class TencentToken(lru.Token):
             _.hash() for _ in self.__builders
         ]).__hash__()
 
-    def build_context(self) -> TencentContext:
-        tencent_context = TencentContext()
+    def build_context(self) -> TenantContext:
+        tenant_context = TenantContext()
         for builder in self.__builders:
-            tencent_context.inject(builder.build())
-        return tencent_context
+            tenant_context.inject(builder.build())
+        return tenant_context
 
 
-class TencentPair(lru.Pair[TencentToken, TencentContext]):
+class TenantPair(lru.Pair[TenantToken, TenantContext]):
     def __repr__(self):
         return f"{self.key}:{self.result}"
 
@@ -82,10 +82,10 @@ class TencentPair(lru.Pair[TencentToken, TencentContext]):
         self.result.discard()
 
 
-class TencentEnvironments(lru.LRU[TencentToken, TencentContext]):
-    pair = TencentPair
+class TenantEnvironments(lru.LRU[TenantToken, TenantContext]):
+    pair = TenantPair
 
-    def apply(self, key: TencentToken) -> TencentContext:
+    def apply(self, key: TenantToken) -> TenantContext:
 
         return key.build_context()
 
@@ -93,7 +93,7 @@ class TencentEnvironments(lru.LRU[TencentToken, TencentContext]):
         with self.lock:
             if not self.cache_map.__len__():
                 return
-            context_item: TencentPair
+            context_item: TenantPair
             for context_item in self:
                 if not context_item:
                     continue

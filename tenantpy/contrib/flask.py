@@ -40,23 +40,23 @@ class BaseModel(peewee.Model):
         database = proxy.LocalProxy(flask.g, "database")
 
 
-tencent_envs = context.TencentEnvironments(max_size=10)
+tenant_envs = context.TenantEnvironments(max_size=10)
 
 
 @atexit.register
 def shut_down_db_pool():
-    tencent_envs.close()
+    tenant_envs.close()
 
 
 @contextlib.contextmanager
-def build_context(token: context.TencentToken):
-    tencent_item = tencent_envs[token]
+def build_context(token: context.TenantToken):
+    tenant_item = tenant_envs[token]
     try:
         flask.g.database = PoolMysqlDatabase(
-            connect=tencent_item.databasemetadata.connection(),
+            connect=tenant_item.databasemetadata.connection(),
             database=token,
         )
-        flask.g.redis = tencent_item.cachemetadata
+        flask.g.redis = tenant_item.cachemetadata
         yield None
     except BaseException as e:
         raise e
@@ -105,15 +105,15 @@ def init_app(
     def before_request():
         mysql_config = config_manager.get_config(ConfigPartition.mysql)
         redis_config = config_manager.get_config(ConfigPartition.redis)
-        token = context.TencentToken()
+        token = context.TenantToken()
         token.organize(mysql.DataBaseMetaDataBuilder(**mysql_config))
         token.organize(cache.CacheMetaDataBuilder(**redis_config))
-        tencent_item = tencent_envs[token]
+        tenant_item = tenant_envs[token]
         flask.g.database = PoolMysqlDatabase(
-            connect=tencent_item.databasemetadata.connection(),
+            connect=tenant_item.databasemetadata.connection(),
             database=token,
         )
-        flask.g.redis = tencent_item.cachemetadata
+        flask.g.redis = tenant_item.cachemetadata
 
     def after_request(response: flask.Response):
         flask.g.database.close()
