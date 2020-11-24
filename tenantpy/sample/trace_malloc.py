@@ -5,6 +5,8 @@ import enum
 import tracemalloc
 import linecache
 
+__all__ = ["register_snapshot_signal"]
+
 __old_snapshot = None
 
 

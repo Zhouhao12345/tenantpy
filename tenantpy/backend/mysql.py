@@ -1,8 +1,16 @@
 import pymysql
-from dbutils import (
-    steady_db,
-    pooled_db,
-)
+
+try:
+    from dbutils import (
+        steady_db,
+        pooled_db,
+    )
+except ImportError:
+    from DBUtils import (
+        SteadyDB as steady_db,
+        PooledDB as pooled_db,
+    )
+
 
 from ..backend import context
 

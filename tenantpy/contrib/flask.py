@@ -1,10 +1,15 @@
 import abc
-from dbutils import steady_db
 import peewee
 import contextlib
 import atexit
 import flask
 import opentracing
+
+try:
+    from dbutils import steady_db
+except ImportError:
+    from DBUtils import SteadyDB as steady_db
+
 
 from ..utils import proxy
 from ..backend import (
@@ -14,6 +19,8 @@ from ..backend import (
 )
 from ..settings import ConfigPartition
 from ..sample import jaeger
+
+__all__ = ["ConfigManager", "BaseModel", "init_jaeger", "init_app"]
 
 
 class ConfigManager(abc.ABC):
