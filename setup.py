@@ -20,7 +20,7 @@ setup(
     python_requires='>=3.7.0',
     author_email="zhouhao19931002@hotmail.com",
     maintainer="zhouhao",
-    description=description(),
+    description="Tenant Management For Web Application",
     packages=find_packages(exclude=("tests",)),
     install_requires=requirements(),
     include_package_data=True,
