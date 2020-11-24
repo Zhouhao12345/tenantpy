@@ -19,6 +19,8 @@ setup(
     author="zhouhao",
     python_requires='>=3.7.0',
     author_email="zhouhao19931002@hotmail.com",
+    long_description=description(),
+    long_description_content_type="text/markdown",
     maintainer="zhouhao",
     description="Tenant Management For Web Application",
     packages=find_packages(exclude=("tests",)),
