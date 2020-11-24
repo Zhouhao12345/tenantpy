@@ -15,7 +15,7 @@ def description():
 
 setup(
     name="tenantpy",
-    version="1.0.2",
+    version="1.0.3",
     author="zhouhao",
     python_requires='>=3.7.0',
     author_email="zhouhao19931002@hotmail.com",
