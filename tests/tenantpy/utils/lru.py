@@ -1,5 +1,5 @@
 import random
-from ...tenantpy.utils import lru
+from tenantpy.utils import lru
 import unittest
 from pympler import asizeof
 
